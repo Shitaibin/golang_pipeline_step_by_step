@@ -30,7 +30,7 @@ func square(inCh <-chan int) <-chan int {
 }
 
 func merge(cs ...<-chan int) <-chan int {
-	out := make(chan int)
+	out := make(chan int, 100)
 
 	var wg sync.WaitGroup
 
