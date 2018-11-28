@@ -23,8 +23,6 @@ func square(inCh <-chan int) <-chan int {
 		defer close(out)
 		for n := range inCh {
 			out <- n * n
-            // simulate
-			time.Sleep(time.Second)
 		}
 	}()
 
@@ -63,7 +61,7 @@ func merge(cs ...<-chan int) <-chan int {
 }
 
 func main() {
-	in := producer(10)
+	in := producer(10000000)
 
 	// FAN-OUT
 	c1 := square(in)
