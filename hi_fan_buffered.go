@@ -1,9 +1,7 @@
-// hi_fan.go
 package main
 
 import (
 	"sync"
-	"time"
 )
 
 func producer(n int) <-chan int {
@@ -29,8 +27,8 @@ func square(inCh <-chan int) <-chan int {
 	return out
 }
 
-func merge(cs ...<-chan int) <-chan int {
-	out := make(chan int, 100)
+func merge(bufSize int, cs ...<-chan int) <-chan int {
+	out := make(chan int, bufSize)
 
 	var wg sync.WaitGroup
 
@@ -69,6 +67,28 @@ func main() {
 	c3 := square(in)
 
 	// consumer
-	for _ = range merge(c1, c2, c3) {
+	for _ = range merge(0, c1, c2, c3) {
+	}
+}
+
+func PipelineFan(bufSize int) {
+	in := producer(10000000)
+
+	// FAN-OUT
+	c1 := square(in)
+	c2 := square(in)
+	c3 := square(in)
+
+	// consumer
+	for _ = range merge(bufSize, c1, c2, c3) {
+	}
+}
+
+func PipelineSimple() {
+	in := producer(10)
+	ch := square(in)
+
+	// consumer
+	for _ = range ch {
 	}
 }
