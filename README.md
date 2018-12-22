@@ -1,4 +1,4 @@
-# 分支介绍
+# 目录介绍
 - master：主要代码
 - fan_model_slow：介绍fan不一定能提升性能
 - optimize_fan_model：优化FAN模式的代码
